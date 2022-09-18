@@ -242,4 +242,10 @@ class Delo extends ActiveRecordEntity
 		$delo->save();
 		return($delo);
 	}
+
+	public static function convertDeloName($value)
+	{
+		$value	= "d.".str_replace(["/"], ["_"], $value);
+		return $value;
+	}
 }

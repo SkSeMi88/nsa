@@ -221,4 +221,76 @@ class Fond extends ActiveRecordEntity
 
             return($fond);
         }
+
+        public static function convertFondById($fond_name)
+        {
+            // $fond           = Fond::getById($fond_id);
+            // $fond_name      = $fond->getName();
+
+            // максимальное число разрядов в имени фонда
+            $maxNum         = 6;
+
+            $rests    = [
+                1   => "0",
+                2   => "00",
+                3   => "000",
+                4   => "0000",
+                5   => "00000",
+            ];
+
+            // раздляем подготовленную строку имени фонда на буквенную и числовую части
+            $tmp            = explode(".", $fond_name);
+
+            // 
+
+
+            // Отделяем последнюю (ЧИСЛОВУЮ) часть шифра у фонда
+            $fond_Number    = $tmp[count($tmp)-1];
+
+
+            // дополняем при необходимости разряды нулей слева у числа в нужном количестве, чтобы было максимаум 16000 , т.е всего д.б. 6 цифр.
+            
+            // получаем сначала массив цифр числовой части в имени фонда
+            $digits         = str_split($fond_Number);
+            // print_r($digits);
+            
+            // Получаем число нулевых разрядов, которое нужно добавить слева к числовой части в имени фонда
+            $rest_digits    = ($maxNum - (count($digits)));
+            // print_r($rest_digits);
+
+            // $fond_Number    = str_pad($fond_Number, $rest_digits, "_", STR_PAD_LEFT);
+
+            // array_pad($digits, $maxNum, "9");
+            // print_r($digits);
+
+            $fond_Number    = $rests[$rest_digits].implode($digits);
+
+            if (count($tmp)==1){
+
+                $fond_name    = "f.".$fond_Number;
+                // print_r($fond_name);
+                return($fond_name);
+
+            }
+
+            $fond_name    = $tmp[0].".".$fond_Number;
+            // print_r($fond_name);
+
+
+
+            
+
+
+
+
+
+            // $fond->setTitle('Название фонда');
+            // $fond->setDates('');
+            // $fond->setPath('');
+    
+            // $fond->save();
+
+            return($fond_name);
+
+        }
 }

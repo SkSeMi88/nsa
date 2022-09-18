@@ -10,6 +10,55 @@ abstract class ActiveRecordEntity implements \JsonSerializable
     /** @var int */
     protected $id;
 
+    private static $translateTable = [
+
+        1 => [
+
+            "а"	=>	"a",
+            "б"	=>	"b",
+            "в"	=>	"v",
+            "г"	=>	"g",
+            "д"	=>	"d",
+            "е"	=>	"e",
+            "з"	=>	"z",
+            "и"	=>	"i",
+            "й"	=>	"i",
+            "к"	=>	"k",
+            "л"	=>	"l",
+            "м"	=>	"m",
+            "н"	=>	"n",
+            "о"	=>	"o",
+            "п"	=>	"p",
+            "р"	=>	"r",
+            "с"	=>	"s",
+            "т"	=>	"t",
+            "у"	=>	"u",
+            "ф"	=>	"f",
+            "х"	=>	"h",
+            "ъ"	=>	"",//"``",
+            "ы"	=>	"y",
+            "ь"	=>	"",//"`",
+        ],
+        
+        2 => [
+            
+            "ё"	=>	"yo",
+            "ж"	=>	"zh",
+            "ц"	=>	"ts",
+            "ч"	=>	"ch",
+            "ш"	=>	"sh",
+            "э"	=>	"eh",
+            "ю"	=>	"yu",
+            "я"	=>	"ya",
+        ],
+        
+        3 => [
+            
+            "щ"	=>	"shch",
+        ],
+        
+    ];
+
     /**
      * @return int
      */
@@ -318,6 +367,50 @@ abstract class ActiveRecordEntity implements \JsonSerializable
             return null;
         }
         return $result;
+    }
+
+    public static function transliter($value) :string
+    {
+
+        // Привести всё значение строки в нижний регистр
+        // разделить буквенную и числовую части друг от друга путем делиметра - или .
+        // просто заменить делиметер на точку
+        
+        // $str = "Р-1480";
+        // var_dump($value);
+
+        $value = strtolower($value);
+        // echo $value;
+
+        $tmp    = strtolower($value);
+        $tmp    = mb_strtolower($value);
+     
+        // print_r($value);
+        // echo "  ";
+        // print_r($tmp);
+        // $trans = array("ab" => "01");
+        // Последовательно заменяю в строке сначала всё по 3, потом 2 и по 1 символу
+        $tmp    = strtr($tmp, self::$translateTable[3]);
+        $tmp    = str_replace(array_keys(self::$translateTable[3]), array_values(self::$translateTable[3]), $tmp);
+        // print_r($tmp);
+        
+        $tmp    = strtr($tmp, self::$translateTable[2]);
+        $tmp    = str_replace(array_keys(self::$translateTable[2]), array_values(self::$translateTable[2]), $tmp);
+        // print_r($tmp);
+        
+        $tmp    = strtr($tmp, self::$translateTable[1]);
+        $tmp    = str_replace(array_keys(self::$translateTable[1]), array_values(self::$translateTable[1]), $tmp);
+        // print_r($tmp);
+
+        // Замена - на (.)
+        $value  = strtr($tmp, "-",".");
+
+
+        // foreach(self::$translateTable[3] AS $k => $v){
+        //     str_replace($k,$v,$tmp);
+        // }
+
+        return($value);
     }
 
 }

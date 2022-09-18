@@ -31,10 +31,18 @@ try {
 	// });
 
 
+// Локаль.
+// header('Content-type: text/html; charset=utf-8');
+// date_default_timezone_set('Europe/Moscow');
 
 
+require __DIR__ . '/../vendor/autoload.php';
 
-    require __DIR__ . '/../vendor/autoload.php';
+setlocale(LC_ALL, 'ru_RU.utf8');
+mb_internal_encoding('UTF-8');
+mb_regex_encoding('UTF-8');
+mb_http_output('UTF-8');
+mb_language('uni');
 
     $route = $_GET['route'] ?? '';
     

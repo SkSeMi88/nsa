@@ -26,7 +26,7 @@ class Opis extends ActiveRecordEntity
 	protected $title;
 
 	/** @var string */
-	protected $dates;
+	protected $date;
 
 	/** @var string */
 	protected $path;
@@ -52,9 +52,9 @@ class Opis extends ActiveRecordEntity
     /**
      * @return string
      */
-    public function getDates(): string
+    public function getDate(): string
     {
-        return $this->dates;
+        return $this->date;
     }
 
     /**
@@ -96,9 +96,9 @@ class Opis extends ActiveRecordEntity
 		return $this->title		= $title;
 	}
 
-	public function setDates($dates): string
+	public function setDate($date): string
 	{
-		return $this->dates		= $dates;
+		return $this->date		= $date;
 	}
 
 	public function setPath($path): string
@@ -236,5 +236,21 @@ class Opis extends ActiveRecordEntity
 
 		$opis->save();
 		return($opis);
+	}
+
+	public static function convertOpisName($value)
+	{
+		// раздeляем подготовленную строку имени фонда на буквенную и числовую части
+		$tmp	= explode(".", $value);
+
+		// Отделяем последнюю (ЧИСЛОВУЮ) часть шифра у фонда
+		$opis_Number    = $tmp[count($tmp)-1];
+
+		if (count($tmp)==1)
+		{
+			$value	= "op.".$opis_Number;
+			return($value);
+		}
+		return($value);
 	}
 }

@@ -2,6 +2,8 @@
 
 return [
 
+    '~^test$~'				    => [\MyProject\Controllers\MainController::class, 'test'],
+
     '~^release$~'				    => [\MyProject\Controllers\MainController::class, 'release'],
     '~^$~'						    => [\MyProject\Controllers\MainController::class, 'main'],
     '~^404$~'						    => [\MyProject\Controllers\MainController::class, 'm404'],

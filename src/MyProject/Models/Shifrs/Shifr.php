@@ -281,10 +281,12 @@ class Shifr extends ActiveRecordEntity
 			
 			// создам в общем дереве в списке фондов  вложенный массив для фонда
     		$Tree["fonds"][$fond->getId()]	= [
-    			"name"	=> $fond->getName(),
+    			"name"	=> $fond->getPath(),
     			"opisi"	=> [],
     			"html"	=> [],
     		];
+
+			$Tree["fonds"][$fond->getId()]["name"] = Fond::convertFondById(Shifr::transliter($fond->getName()));
     		
 			// для каждой описи $opis из списка всех описей $opisi_items  в конкретном фонде $fond
     		foreach($opisi_items AS $opis)
@@ -292,11 +294,14 @@ class Shifr extends ActiveRecordEntity
     			$SQL3	= 'WHERE (fond_id="'.$fond->getId().'") AND(opis_id="'.$opis->getId().'") ORDER BY name';
     			$dela	= Delo::findAllByColumnWhere($SQL3);
 
-				echo "<pre>";
-				print_r($fond->getId());
-				print_r($opis->getId());
-				// var_dump(print_r($dela));
-				echo "</pre>";
+				// echo "<pre>";
+				// print_r($fond->getName());
+				// print_r(Shifr::transliter($fond->getName()));
+				// echo "	+>	";
+				// // Fond::convertFondById($fond->getId());
+				// Fond::convertFondById(Shifr::transliter($fond->getName()));
+				// // var_dump(print_r($dela));
+				// echo "</pre>";
 
 	    		if ($dela===null){
 					continue;
@@ -308,7 +313,7 @@ class Shifr extends ActiveRecordEntity
     		
     			$Tree["fonds"][$fond->getId()]["opisi"]["items"][]	= $opis->getId();
     			$Tree["fonds"][$fond->getId()]["opisi"][$opis->getId()]	= [
-    				"name"	=> $opis->getName(),
+    				"name"	=> $opis->getPath(),
     				"dela"	=> [],
     			];
 
@@ -329,7 +334,7 @@ class Shifr extends ActiveRecordEntity
     				$Tree["fonds"][$fond->getId()]["opisi"][$opis->getId()]["dela"]["items"][]		= $delo->getId();
     				$Tree["fonds"][$fond->getId()]["opisi"][$opis->getId()]["dela"][$delo->getId()]	= [
     					// "name"	=> $fond->getName()." ". $opis->getName()." ".$delo->getName(),
-    					"name"	=> $delo->getName(),
+    					"name"	=> $delo->getPath(),
     					"html"	=> $fond->getName()." ". $opis->getName()." ".$delo->getName(),
     					"lists"	=> [],
     				];

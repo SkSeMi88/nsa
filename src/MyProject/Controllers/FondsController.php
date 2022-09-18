@@ -118,6 +118,13 @@ class FondsController extends AbstractController
     */
 
         // echo "<pre>";
+
+        // $value = "ЙцукЙвае Qwert aSdfg zxCv Р 1480";
+        // var_dump($value);
+
+        // $value = mb_strtolower($value);
+        // echo $value;
+
         $TREE	= Shifr::getShifrTree();
      //   echo "Пример вывода дерева архивного шифра<pre>";
         

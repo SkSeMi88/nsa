@@ -116,6 +116,7 @@
 		  cursor		: pointer;
 		  padding-left	: 37px;
 		  border-left	: solid 1px;
+		  width:25vw;
 		  /*border-bottom	: solid 1px;*/
 		}
 		
@@ -272,7 +273,7 @@
 	        	$i2	= $TREE["fonds"][$fond_id]["opisi"][$opis_id]["name"];
 	        	// echo "<div style='margin-left:25px;'>" . $i2. "</div>";
 	        	echo '<li class="toggle">';
-	        	echo $i2;
+	        	echo $i." - ".$i2;
         		echo '<input type="checkbox">';
         		echo '<ol class="tree">';
 

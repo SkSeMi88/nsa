@@ -834,12 +834,12 @@ class Card extends ActiveRecordEntity
         if ($fond===null)
         {
 
-                $fond   = Fond::createFromСard( $fond_name);
-                if ($fond===null)
-                {
+            $fond   = Fond::createFromСard($fond_name);
+            if ($fond===null)
+            {
 
-                    return(false);
-                }
+                return(false);
+            }
         }
 
         $fond_id    = $fond->getId();
