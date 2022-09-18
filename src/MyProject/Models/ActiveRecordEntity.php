@@ -231,7 +231,7 @@ abstract class ActiveRecordEntity implements \JsonSerializable
         return $result[0];
     }
 
-    public static function findAllByColumnWhere(string $where)//: array
+    public static function findAllByColumnWhere(string $where)//:mixed
     {
         $db = Db::getInstance();
         $SQL    = 'SELECT * FROM '. static::getTableName().' '. $where;

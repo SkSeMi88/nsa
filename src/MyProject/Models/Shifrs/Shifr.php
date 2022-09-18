@@ -254,33 +254,55 @@ class Shifr extends ActiveRecordEntity
     	// var_dump($SQL);
     	// // $tmp	= self::
     	
+		// Получение всех фондов отсортированных по имени
     	$SQL			= "ORDER BY name;";
     	$fonds_items	= Fond::findAllByColumnWhere($SQL);
+
+		// Для каждого фонда
     	foreach($fonds_items AS $fond){
     		
+			// находим все описи отсортированные по имени
     		$SQL2	= 'WHERE (fond_id="'.$fond->getId().'") ORDER BY name';
+
+			// Получение всех описей по ид-ру фонда
     		$opisi_items	= Opis::findAllByColumnWhere($SQL2);
+
+			// переходим к следующему фонду если нет описей у текущего
+			if ($opisi_items===null){
+				continue;
+			};
     		if (count($opisi_items)==0){
     			continue;
     		};
     		
+			// Добавляем в список фондов в дереве ид-р фонда
     		$Tree["fonds"]["items"][]	= $fond->getId();
     		
-
+			
+			// создам в общем дереве в списке фондов  вложенный массив для фонда
     		$Tree["fonds"][$fond->getId()]	= [
     			"name"	=> $fond->getName(),
     			"opisi"	=> [],
     			"html"	=> [],
     		];
     		
+			// для каждой описи $opis из списка всех описей $opisi_items  в конкретном фонде $fond
     		foreach($opisi_items AS $opis)
     		{
     			$SQL3	= 'WHERE (fond_id="'.$fond->getId().'") AND(opis_id="'.$opis->getId().'") ORDER BY name';
     			$dela	= Delo::findAllByColumnWhere($SQL3);
 
-				// var_dump($dela);
+				echo "<pre>";
+				print_r($fond->getId());
+				print_r($opis->getId());
+				// var_dump(print_r($dela));
+				echo "</pre>";
 
-	    		if (count($dela)==0){
+	    		if ($dela===null){
+					continue;
+				};
+
+	    		if ((count($dela)==0)||($dela===null)){
 	    			continue;
 	    		};
     		
@@ -294,6 +316,11 @@ class Shifr extends ActiveRecordEntity
 
     				$SQL4	= 'WHERE (fond_id="'.$fond->getId().'") AND(opis_id="'.$opis->getId().'") AND(delo_id="'.$delo->getId().'")  ORDER BY list';
     				$lists	= Shifr::findAllByColumnWhere($SQL4);
+
+
+					if ($lists===null){
+						continue;
+					};
 
     				if(count($lists)==0){
     					continue;
