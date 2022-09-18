@@ -542,7 +542,7 @@ class CardsController extends AbstractController
         $errors     = [];
         $ThemList   = ThemList::findAll();
       
-         //var_dump($this->user);
+        //  var_dump($this->user->getFio());
 
          if ($this->user === null) {
              throw new UnauthorizedException();

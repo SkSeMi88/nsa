@@ -190,8 +190,14 @@
 
 </head>
 <body>
-
+<!-- <hr>
+<pre> -->
+<?//= var_dump($user->getFio())?>
+    <!-- </pre>
+<hr> -->
 <?php
+
+    
     echo "<div>";
     if (!empty($errors))
     {
@@ -219,7 +225,6 @@
     echo "</div>";
 ?>
 
-<body>
 <div>
 	<div class="user-line">
 		<?php
@@ -583,7 +588,8 @@
 		Составитель карточки
 	</div>
 	<div class="cardFieldValue">
-		<input type="text" name="compiler" required value="<?php if (isset($_POST["compiler"])){echo $_POST["compiler"];}?>"   style="width:25%;">
+		<!-- <input type="text" name="compiler" required value="<?//php// if (isset($_POST["compiler"])){echo $_POST["compiler"];}?>"   style="width:25%;"> -->
+		<input type="text" name="compiler" required value="<?= $user->getFio();?>"   style="width:25%;">
 		<div class="cardFieldName" style="text-align:center;">
 			<div style="margin-left:75px;">
 			<!-- <div style="text-align:center;"> -->
