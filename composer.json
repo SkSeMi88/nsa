@@ -1,0 +1,19 @@
+{
+    "name": "sergey/mvc2021",
+    "type": "project",
+    "license": "proprietary",
+    "authors": [{
+        "name": "SkSeMi",
+        "email": "none@none.none"
+    }],
+    "autoload": {
+        "psr-4": {
+            "Admin\\": "src/Admin/",
+            "MyProject\\": "src/MyProject/"
+        }
+    },
+    "require": {
+        "erusev/parsedown": "^1.7",
+        "masterminds/html5": "^2.7"
+    }
+}

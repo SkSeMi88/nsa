@@ -1,0 +1,78 @@
+.create_card_form {
+    width: 100%;
+    background: rgb(228, 224, 224);
+    /*backface-visibility: hidden;*/
+    display: flex;
+}
+
+.card_field_box {
+    position: relative;
+    width: 300px;
+    z-index: 15000;
+}
+
+.live_search {
+    position: relative;
+    z-index: 5000;
+    width: 300px;
+}
+
+.live_search_box {
+    /* position: absolute; */
+    background: antiquewhite;
+    width: 500px;
+    z-index: 1;
+}
+
+#t1_result {
+    display: none;
+    /* position: absolute; */
+    z-index: 5;
+    min-width: 700px;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+#t2_result {
+    display: none;
+    /* position: absolute; */
+    z-index: 10;
+}
+
+#t3_result {
+    display: none;
+    /* position: absolute; */
+    z-index: 15;
+}
+
+.bp_type {
+    display: flex;
+    width: auto;
+    width: 300px;
+}
+
+.bp_type_name1 {
+    text-align: left;
+    width: 25%;
+}
+
+.bp_type_value {
+    text-align: right;
+    /* position: relative; */
+}
+
+.photo {
+    width: 150px;
+}
+
+#search_t1,
+#search_t2,
+#search_t3 {
+    z-index: 1;
+    /* position: relative; */
+}
+
+.finder_box,
+.finder {
+    display: flex;
+}

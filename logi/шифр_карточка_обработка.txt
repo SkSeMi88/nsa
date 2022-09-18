@@ -1,0 +1,83 @@
+id; 
+doc_type; 
+event_date; 
+card_date; 
+event_place; 
+card_place; 
+doc_header; 
+shifr_id; 
+original; 
+langs; 
+playback; 
+state; 
+compiler; 
+compilation_date; 
+summary; 
+persons
+
+
+
+Фонд	опись	Дело	Лист
+Да		Да		Да		Да
+Да		Да		Да		нет
+
+
+нет	нет	нет	нет
+да		нет	нет	нет	создать запись с 
+
+отделить последний элемент списка
+если да то запрос создания 
+
+
+fields, 
+
+если нет фопдл то создать и вернуть ид записи
+
+есть фонд в т фонды вернуть ид
+если нет то создать и вернуть ид-р
+
+есть ли опись в писях с таким то фондом?
+да, вернуть ид
+нет, создать и вернуть ид
+
+есть ли дело в делах с фондом и описью в тблице дел?
+да, вернуть ид-р записи делах
+нет, созадть запись дела с фо и вернуть ид-р
+
+добавить все ид-ры в ассоциативный массив
+
+есть ли запись с такими идентивикаторами и листом
+есть тогда вернуть ее ид-ра
+
+нет, создать запись вместе с листом и вернуть ид-р шифра
+
+записать/вернуть ид-р шифра в карточку
+
+
+получить fond_id или создать
+получить opis_id или создать
+получить delo_id или создать
+
+
+
+INSERT INTO `delo` (`id`, `fond_id`, `opis_id`, `name`, `title`, `date`, `path`) VALUES (NULL, '1', '1', 'Д.1', 'Тестовое дело №1', 'даты в произвольном виде', '');
+
+
+ALTER TABLE `fonds` CHANGE `dates` `dates` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `fonds` CHANGE `path` `path` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+
+
+
+
+
+
+ALTER TABLE `opisi` CHANGE `date` `date` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL; 
+ALTER TABLE `opisi` CHANGE `path` `path` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL; 
+
+ALTER TABLE `delo` CHANGE `path` `path` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `delo` CHANGE `date` `dates` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+
+
+ALTER TABLE `shifrs` CHANGE `prim` `prim` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL; 
+
+

@@ -1,0 +1,75 @@
+div {
+	/*background-color: silver;*/
+	/*color: red;*/
+}
+h3{
+	/*color : red;*/
+}
+
+		body {
+			
+			margin		: 0px;
+			padding		: 0px;
+		}
+		textarea {
+			width		: 80%;
+			font-size	: 14px;
+			height		: 30px;
+			padding		: 0px;
+			margin		: 1px;
+		}
+
+		.line1{
+			background		: green;
+			width			: 100%;
+			height			: 20px;
+			margin			: 0px;
+			padding			: 0px;
+			color			: white;
+			margin-right	: 10px;
+			text-align		: right;
+		}
+
+
+		.input_header, .show_new_line_element_1 {
+			
+			width: 5vw;
+			text-align		: center;
+		}
+		.bp_header {
+
+			width: 10vw;
+			text-align		: center;
+		}
+
+
+	.fio_textarea {
+
+		width: 65%;
+	}
+
+	.save_btn_el {
+
+		margin-left		: 5px;
+/*		background		: red;
+		color			: white;*/
+		border-color: 	: red;
+	}
+
+	.del_btn_el {
+
+		margin-left		: 5px;
+		background		: red;
+		color			: white;
+		border-color: 	: red;
+	}
+
+	.del_btn_card {
+
+		margin-left		: 5px;
+		background		: red;
+		color			: white;
+		border-color: 	: 0px, red;
+		font-size		: 20px;
+		text-align		: center;
+	}

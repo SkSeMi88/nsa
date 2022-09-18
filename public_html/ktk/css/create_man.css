@@ -1,0 +1,146 @@
+/*
+div {
+	background-color: silver;
+}
+*/
+.fio {
+	width: 10vw;
+
+}
+
+#result {
+	width: 35vw;
+}
+
+
+.form_text_line {
+	width: 75%;
+}
+
+
+
+.show_new_line {
+
+	display:	flex;
+	flex-direction	:row;
+
+}
+
+
+.show_new_line_element {
+
+	width: 25vw;
+	/*display:	flex;*/
+	flex-direction		: row;
+	background-color	: silver;
+	text-align			: center;
+}
+
+select {
+
+	width				: inherit;
+	max-height			: 150px;
+}
+
+textarea {
+
+	width: 80%;
+}
+
+
+input.fio {
+	margin: 	5px;
+	padding: 	5px;
+	text-align: center;
+}
+
+/*textarea*/
+.prim {
+	width: auto;
+}
+
+#finders {
+
+	width: 				50vw;
+	margin-bottom: 		5px;
+	text-align: 	center;
+}
+
+#finders input, select {
+
+	/*width: 				50vw;*/
+	margin: 		5px;
+	text-align: 	center;
+}
+
+
+.preview div{
+
+	margin: 		5px;
+}
+
+
+.live_search_line {
+
+	display:	flex;
+	flex-direction	:column;
+	width: 20vw;
+	position: relative;
+}
+
+.live_search_element {
+
+	flex-direction	:column;
+	/*position: relative;*/
+	/*margin-top: 100px;
+	margin-left: -50px;*/
+}
+
+#bplace_live_search_result {
+
+	max-height: 20vh;
+	flex-flow: all;
+	overflow: auto;
+}
+
+.live_search_element {
+
+	position: absolute;
+	top		: 20px;
+}
+.live_search_element > span{
+
+	display: inline-block;
+}
+.live_search_element > span:hover {
+
+	background-color	: silver;
+	width				: 100%;
+	cursor				: pointer;
+
+}
+
+
+/*datalist option {
+
+	font-style: italic;
+	background-color: red;
+}
+
+input[list]
+{
+  background: red;
+}
+
+datalist {display:inline-block;}
+
+*/
+
+
+textarea.text_prim {
+
+	min-height				: 75px;
+	height					: 95%;
+	width: 					: 95%;
+	/*max-height				: 150px;*/
+}

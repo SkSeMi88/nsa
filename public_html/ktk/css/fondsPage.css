@@ -1,0 +1,62 @@
+		input.del_btn {
+			
+			background		: red;
+			color			: white;
+			font-weight		:bold;
+		}
+		textarea {
+			width		: 80%;
+			font-size	: 14px;
+			height		: 30px;
+			padding		: 0px;
+			margin		: 1px;
+		}
+
+		.line1{
+			background	: silver;
+			width		: 100%;
+			height		: 20px;
+			margin		: 0px;
+			padding		: 0px;
+			//text-color	: white;
+			margin-right	: 10px;
+			text-align	: right;
+		}
+		
+		.line1 p {
+			margin		: 0px;
+			color	: red;
+		}
+
+		body {
+			
+			margin		: 0px;
+			padding		: 0px;
+		}
+		.line1{
+			background	: green;
+			width		: 100%;
+			height		: 20px;
+			margin		: 0px;
+			padding		: 0px;
+			color	: white;
+			margin-right	: 10px;
+			text-align	: right;
+		}
+		
+		.line1 p > a {
+			margin		: 0px;
+			color		: white;
+		}
+		
+		h1 {
+			margin		: 0px;
+			background	: silver;
+			padding		: 5px;
+		}
+		
+		#menu_line a{
+			color		: blue;
+		}
+		
+		
