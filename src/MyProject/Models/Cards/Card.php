@@ -15,6 +15,10 @@ use MyProject\Models\Shifrs\Shifr;
 use MyProject\Models\Thems\ThemList;
 use MyProject\Models\Thems\Them;
 
+use MyProject\Models\Persons\Person;
+use MyProject\Models\Persons\CardPerson;
+
+
 // use MyProject\Models\Shifrs\Shifr;
 use MyProject\Models\Bplaces\Bplace;
 use MyProject\Models\Finders\Finder;
@@ -71,7 +75,7 @@ class Card extends ActiveRecordEntity
     protected $summary; 
 
    /** @var string */
-    protected $persons;
+    public $persons;
 
 
 
@@ -190,7 +194,7 @@ class Card extends ActiveRecordEntity
     /*
     * @return string
     */
-    public function getPersons(): string
+    public function getPersons(): mixed
     {
         return $this->persons;
     }
@@ -320,7 +324,7 @@ class Card extends ActiveRecordEntity
     /*
     * @return string
     */
-    public function setPersons($persons): string
+    public function setPersons($persons): mixed
     {
         return $this->persons   = $persons;
     }
@@ -669,10 +673,14 @@ class Card extends ActiveRecordEntity
         $tmp    = parent::findAll();
         $card   = [];
 
-        foreach ($tmp as $key => $value) {
-            $tmp[$key]->bplace  = Bplace::getById($value->getBplaceId());
-            $tmp[$key]->finder  = Finder::getById($value->getFinderId());
-        }
+        // echo "<pre>";
+        // foreach ($tmp as $key => $value) {
+        //     // echo "<br>";
+        //     // print_r($key);
+        //     // print_r(explode(",", $value->getPersons()));
+        //     // $tmp[$key]->bplace  = Bplace::getById($value->getBplaceId());
+        //     // $tmp[$key]->finder  = Finder::getById($value->getFinderId());
+        // }
 
         return($tmp);
     }
@@ -920,7 +928,7 @@ class Card extends ActiveRecordEntity
         $new_card->setCompiler($card["compiler"]);
         $new_card->setCompilationDate($card["compilation_date"]);
         $new_card->setSummary($card["summary"]);
-        $new_card->setPersons($card["persons"]);
+        // $new_card->setPersons($card["persons"]);
 
         $new_card->save();
 
@@ -933,6 +941,15 @@ class Card extends ActiveRecordEntity
             $them->setThemId($t);
             $them->setTypeId (6);
             $them->setValue($new_card_id);
+            $them->save();
+        }
+
+        foreach($card["persons"] AS $t)
+        {
+
+            $them   = new CardPerson;
+            $them->setCard($new_card_id);
+            $them->setPerson($t);
             $them->save();
         }
 
@@ -983,13 +1000,51 @@ class Card extends ActiveRecordEntity
         // var_dump($card_thems);
         // $card->thems    = $card_thems;
         // echo "</pre>";
+
+        $card_persons   = CardPerson::findAllByColumnWhere("WHERE (card='".$card->getId()."')");
+
+        // $card->persons = $card_persons;
+        // var_dump($card_persons);
+        $tmp    = [];
+        
+        if ($card_persons ===null)
+        {
+            $card->persons  = [];
+            return($card);
+        }
+
+        foreach ($card_persons AS $k => $v)
+        {
+            // echo "<hr>";
+            // var_dump($v);
+            // echo "<br>>>";
+
+            $person_id      = $v->getPerson();
+
+            $person_obj     = Person::findOneByColumn("id", $v->getPerson());
+            
+            $person_name    = $person_obj->getName();
+
+            // print_r((Person::findOneByColumn("id", $v->getPerson())));
+            // echo "<br>!!!";
+            
+            // print_r((Person::findOneByColumn("id", $v->getPerson()))->getName());
+            // $card->persons[$v->getPerson()] = Person::findOneByColumn("id", $v->getPerson())->getName();
+            // $card->persons[$person_id]      = $person_name;
+            $tmp[$person_id]      = $person_name;
+
+        }
+
+        $card->persons  = $tmp;
+
+
         return($card);
     }
 
     public static function editCard($newCard, $cardId)
     {
 
-        // echo "<pre>newCard";
+        // echo "<pre>newCard>>>>>>>>>>";
         // var_dump($newCard);
         // echo "<hr>";
         // echo "</pre>";
@@ -998,7 +1053,7 @@ class Card extends ActiveRecordEntity
 
         if ($card_thems!==null){
 
-            // удаление всех старых ткм у карточки, чтобы все записать новые только-последние
+            // удаление всех старых тем у карточки, чтобы все записать новые только-последние
             $old_thems  = [];
             foreach($card_thems AS $old_them)
             {
@@ -1007,6 +1062,8 @@ class Card extends ActiveRecordEntity
                 $old_them->delete();
             }
         }
+
+
 
         $editedCard = Card::getById($cardId);
 
@@ -1058,15 +1115,103 @@ class Card extends ActiveRecordEntity
         $editedCard->setCompiler($newCard["compiler"]);
         $editedCard->setCompilationDate($newCard["compilation_date"]);
         $editedCard->setSummary($newCard["summary"]);
-        $editedCard->setPersons($newCard["persons"]);
+        // $editedCard->setPersons($newCard["persons"]);
 
         $editedCard->save();
 
 
         $editedCard->thems  = $newCard["thems"];
+        
+        $editedCard->persons  = $newCard["persons"];
 
-        // $editedCard_id    = $editedCard->getId();
+        // // $editedCard_id    = $editedCard->getId();
+
+        $old_persons    = Card::getCardPersons(Card::getById($cardId));
+        // var_dump($old_persons);
+        foreach($old_persons AS $k=>$v)
+        {
+            // if (!in_array( $k, array_keys($newCard["persons"])))
+            // {
+                // $CardPersonRecord    = CardPerson::findOneByColumnWhere(" WHERE (card='".$cardId."') AND ('person=".$k."')");
+                $CardPersonRecord    = CardPerson::findOneByColumnWhere(" WHERE (card='".$cardId."') AND (person='".$k."')");
+                // echo "<br>%";
+                // var_dump($CardPersonRecord);
+                if ($CardPersonRecord !==null)
+                {
+                    $t  = $CardPersonRecord->delete();
+                    // $CardPersonRecord->save();
+                    print_r($t);
+                }
+            // }
+        }
+
+        // var_dump($old_persons);
+        // $old_persons    = Card::getCardPersons(Card::getById($cardId));
+
+        foreach($newCard["persons"] AS $k=>$v)
+        {
+            
+            $newCardPerson  = new CardPerson();
+            $newCardPerson->setCard($cardId);
+
+            // $newPerson  = Person::checkPersonExist($v);
+
+            $newCardPerson->setPerson($k);
+            $newCardPerson->save();
+
+        }
+
 
         return($editedCard);
     }
+
+    public static function getCardPersons($card){
+
+        // Получаем ид-р карточки
+        $card_id    = $card->getId();
+        // var_dump($card_id);
+        
+        // Получаем ид-ры персоналий
+        $persons_ids    = CardPerson::findAllByColumnWhere(" WHERE (card=".$card_id.");");
+        // var_dump($persons_ids);
+        // OneByColumn("card", $card_id);
+
+        if ($persons_ids===null)
+        {
+            return([]);
+        }
+        
+        $card_persons    = [];
+
+        // Получаем имена персоналий по ид-рам
+        foreach($persons_ids AS $person_id)
+        {
+            $card_persons[$person_id->getPerson()]  = Person::findOneByColumn("id", $person_id->getPerson())->getName();
+
+        }
+
+        // Выводим массив персоналий для карточки
+        return($card_persons);
+
+    }
+
+    // public static function deleteCard($cardId)
+    // {
+    //     $card   = Card::getById($cardId);
+    //     var_dump($card);
+
+    // }
+
+    /*
+    Для клинера на будущее
+    SELECT * FROM `cards_persons` WHERE`card` NOT IN (SELECT id FROM cards);
+    */
+
+    public static function prepareNewCard($cardId)
+    {
+        var_dump($cardId);
+
+
+    }
+
 }

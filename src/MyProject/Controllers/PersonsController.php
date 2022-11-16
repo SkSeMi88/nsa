@@ -15,6 +15,10 @@ use MyProject\Models\Thems\ThemList;
 use MyProject\Models\Shifrs\Shifr;
 use MyProject\Models\Users\UserActivationService;
 
+use MyProject\Models\Persons\Person;
+use MyProject\Models\Persons\PersonTest;
+use MyProject\Models\Persons\CardPerson;
+
 use MyProject\Exceptions;
 use MyProject\Exceptions\ForbiddenException;
 use MyProject\Exceptions\UnauthorizedException;
@@ -27,7 +31,7 @@ use MyProject\Models\Site\Site;
 
 
 
-class ThemsController extends AbstractController
+class PersonsController extends AbstractController
 {
 
     /** @var View */
@@ -59,9 +63,9 @@ class ThemsController extends AbstractController
         // echo "<pre>";
     	// echo "СПИСОК";
     	$msg        = [];
-        $thems		= ThemList::findAllByASC("name");
-        // var_dump($thems);
-        $count_all	= count($thems);
+        $persons		= Person::findAllByASC("name");
+        // var_dump($persons);
+        $count_all	= count($persons);
         $this->view->setVar('count_all', $count_all);
         
         // echo "<pre>";
@@ -70,31 +74,31 @@ class ThemsController extends AbstractController
         if (!empty($_POST)){
             var_dump($_POST);
             
-            if (isset($_POST["save_them"])){
+            if (isset($_POST["save_person"])){
 
                 
                 // $them   = ThemList::updateFromArray($_POST);
-                $them   = ThemList::getById($_POST["them_id"]);
+                $person   = Person::getById($_POST["them_id"]);
                 
                 
                 try {
-                    $them->updateFromArray($_POST);
+                    $person->updateFromArray($_POST);
                 } catch (InvalidArgumentException $e) {
                     // $this->view->renderHtml('articles/edit.php', ['error' => $e->getMessage(), 'article' => $article]);
-                    $this->view->renderHtml('thems/thems_list2.php', ['thems' => $thems, 'error' => $e->getMessage(), 'msg'=>$msg]);
+                    $this->view->renderHtml('persons/persons_list.php', ['persons' => $persons, 'error' => $e->getMessage(), 'msg'=>$msg]);
                     return;
                 }
 
-                $msg[]  = "Изменения тематики успешно сохранены.";
+                $msg[]  = "Изменения персоналии успешно сохранены.";
 
             }
 
             if (!empty($_POST["create_new_them"])){
-                $them   = ThemList::createFromArrayForm($_POST);
+                $person   = Person::createFromArrayForm($_POST);
 
-                if ($them!==null){
+                if ($person!==null){
 
-                    $msg[]  = "Новая тематика успешно создана.";
+                    $msg[]  = "Новая персоналия успешно создана.";
                 }
             }
         
@@ -106,7 +110,7 @@ class ThemsController extends AbstractController
         }
 
         // var_dump($this->user);
-        $thems		= ThemList::findAllByASC("name");
+        $persons		= Person::findAllByASC("name");
 
         // // SELECT them_id, count(`them_id`) as count FROM `thems` WHERE type_id=6 GROUP BY them_id HAVING count(`them_id`)>1 ORDER BY `count` ASC;
 
@@ -145,7 +149,7 @@ class ThemsController extends AbstractController
         // // echo "</pre>";
 
 
-        if ($thems === null) {
+        if ($persons === null) {
             echo ">>>>>>>>";
             $this->view->renderHtml('errors/404.php', [], 404);
             return;
@@ -154,36 +158,31 @@ class ThemsController extends AbstractController
         echo "</pre>";
 
         // $this->view->renderHtml('thems/thems_list2.php', ['thems' => $thems, 'msg'=>$msg]);
-        $this->view->renderHtml('thems/thems_list3.php', ['thems' => $thems, 'msg'=>$msg, "user"=>$this->user]);
+        $this->view->renderHtml('persons/persons_list.php', ['persons' => $persons, 'msg'=>$msg, "user"=>$this->user]);
     }
 
-    public function viewCard(int $ThemId): void
+    public function viewCard(int $personId): void
     {
 
         $msgs            = [];
         $errors          = [];
-        $themCard       = ThemList::getById($ThemId);
+        $personCard       = Person::getById($personId);
         
         // echo "<pre>";
-        // var_dump($themCard);
+        // var_dump($personCard);
+        // echo "</pre>";
 
         if (!empty($_POST)){
-            var_dump($_POST);
-
-            $themCard   = $themCard->updateFromArray($_POST);
-
-            
-            if (isset($_POST["save_them"])){
-                if ((!isset($_POST["them_name"]))||(strlen($_POST["them_name"])<3)){
-                    $errors[]    = "Ошибка ввода. Название темы имеет некорректное значение.";
+            // var_dump($_POST);
+            if (isset($_POST["save_person"])){
+                if ((!isset($_POST["person_name"]))||(strlen($_POST["person_name"])<3)){
+                    $errors[]    = "Ошибка ввода. Название персоналии имеет некорректное значение.";
                 }
-                elseif($themCard->getName()!==$_POST["them_name"]) {
+                elseif($personCard->getName()!==$_POST["person_name"]) {
                     try {
                         //code...
-                        $themCard->setName($_POST["them_name"]);
-                        $themCard->setFather(0);
-                        $themCard->setCount($themCard->getCount());
-                        $themCard->save();
+                        $personCard->setName($_POST["person_name"]);
+                        $personCard->save();
                     } catch (\Throwable $e) {
                         //throw $th;
                         $errors[]    = "Ошибка при сохранении изменений.";
@@ -192,48 +191,65 @@ class ThemsController extends AbstractController
                     // echo"qwerty";
                     $msgs[]  = "Изменения успешно созранены.";
                 }
+
+                if($personCard->getTitle()!==$_POST["person_title"]) {
+                    try {
+                        //code...
+                        $personCard->setTitle($_POST["person_title"]);
+                        $personCard->save();
+                    } catch (\Throwable $e) {
+                        //throw $th;
+                        $errors[]    = "Ошибка при сохранении изменений.";
+                        $errors[]    = $e;
+                    }
+                    // echo"qwerty";
+                    $msgs[]  = "Изменения успешно сохранены.";
+                }
             }
-            $themCard       = ThemList::getById($ThemId);
+
+            $personCard       = Person::getById($personId);
         }
 
-        $themCard->cards    = [];
+        $personCard->cards    = [];
 
-        $WHERE              = 'WHERE (them_id="'.$ThemId.'") AND (type_id="6")';
-        $them_cards         = Them::findAllByColumnWhere($WHERE);
+        $WHERE              = 'WHERE (person="'.$personId.'")';
+        $person_cards         = CardPerson::findAllByColumnWhere($WHERE);
 
         // Если нет карточек у темы, то список в карточке у нее булет пустым а не null с ошибкой
-        if($them_cards===null)
+        if($person_cards===null)
         {
-            $them_cards = [];
+            $person_cards = [];
         }
-        // var_dump($them_cards);
+        // var_dump($person_cards);
         // echo "</pre>";
 
         // for($i=0; $i<count($them_cards); $i++)
-        foreach($them_cards AS $k=>$t)
+        foreach($person_cards AS $k=>$t)
         {
-            $cardId     = $t->getValue();
+            $cardId     = $t->getCard();
             // echo "<br>>>".$them_cards[$i]->getValue();
             $card       = Card::getById($cardId);
-            // echo "<hr>";
+            // echo "<hr>>>>>>>>>>>>>$cardId";
             // var_dump($card);
-            if (($card===null)||($card->deleted=="1"))
+            if (($card==null)||($card->deleted=="1"))
             {
+                echo "12345";
                 continue;
             }
-
-            $card->shifrFullName    = Shifr::getShifrFullName($card->getShifrId());
             
+            $card->shifrFullName    = Shifr::getShifrFullName($card->getShifrId());
+            // echo "<hr>???";
+            // var_dump($card);
             // $themCard->cards[$card->getId()]    = $card;
-            $themCard->cards[]    = $card;
+            $personCard->cards[]    = $card;
+            // var_dump($personCard);
             
         }
         
-        // var_dump($themCard->cards);
+        // var_dump($personCard);
         // echo "</pre>";
 
-        // $this->view->renderHtml('thems/thems_card.php', ['them' => $themCard]);
-        $this->view->renderHtml('thems/thems_card2.php', ['them' => $themCard, 'errors'=>$errors, 'msgs'=>$msgs]);
+        $this->view->renderHtml('persons/persons_card.php', ['person' => $personCard, 'errors'=>$errors, 'msgs'=>$msgs]);
     }
 
     public function view(int $cardId): void
@@ -690,11 +706,11 @@ class ThemsController extends AbstractController
         
     }
 
-    public function createCard()
-    {
+    // public function createCard()
+    // {
 
 
 
-        $this->view->renderHtml('cards/create_card2.php');
-    }
+    //     $this->view->renderHtml('cards/create_card2.php');
+    // }
 }

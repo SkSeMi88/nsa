@@ -222,6 +222,7 @@ class Shifr extends ActiveRecordEntity
     {
         $ShifrFullName  = [];
         $shifr  = self::getById($shifrId);
+		if ($shifr===null) return [];
         // var_dump($shifr);
         $ShifrFullName["fond"]  = Fond::getById($shifr->getFondId())->getName();
         $ShifrFullName["opis"]  = Opis::getById($shifr->getOpisId())->getName();

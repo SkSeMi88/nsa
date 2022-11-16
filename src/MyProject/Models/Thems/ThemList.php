@@ -87,8 +87,8 @@ class ThemList extends ActiveRecordEntity
         ];
 
         $new_form = [
-            "new_them_name"		=>[],
-            "new_father"	=>[]
+            "new_them_name"     =>[],
+            "new_father"        =>[]
         ];
 
 		if (strlen($fields["new_them_name"])<3){
@@ -99,7 +99,7 @@ class ThemList extends ActiveRecordEntity
         // echo "<br>Поля карточки со значекниями массива:";
 
         $response = [
-            "status" => true,
+            "status"    => true,
             "errors"    => $errors,
         ];
 
@@ -324,19 +324,26 @@ class ThemList extends ActiveRecordEntity
     {
 
         $them   = ThemList::findOneByColumn("name", $them_name);
-
+        
         if ($them !==null){
             return($them->getId());
         }
-
-        $them   = new ThemList;
+        
+        // $them   = new ThemList();
+        // $them->setName($them_name);
+        // $them->setFather(0);
+        // $them->setCount(0);
+        // $them->save();
+        
+        $them = new ThemList();
         $them->setName($them_name);
-        $them->setFather(0);
         $them->save();
+        // var_dump($them);
 
         return($them->getId());
     }
 
+    
     public static function getCardDatalist()
     {
         $ThemList   = ThemList::findAll();
@@ -464,4 +471,7 @@ class ThemList extends ActiveRecordEntity
 
         return $thems;
     }
+
+
+
 }

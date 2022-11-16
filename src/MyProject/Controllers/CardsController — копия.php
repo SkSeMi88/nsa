@@ -35,7 +35,6 @@ use MyProject\Models\Users\UserActivationService;
 use MyProject\Services\EmailSender;
 use MyProject\Services\UsersAuthService;
 
-use function PHPSTORM_META\type;
 
 // namespace MyProject\Controllers;
 
@@ -643,7 +642,7 @@ class CardsController extends AbstractController
                 {
                     if ((!isset($v))||(strlen($v)<3))
                     {
-                        $errors[]   = "Ошибка ввода. Не корректное значение в поле персоналии $v.";
+                        $errors[]   = "Ошибка ввода. Не корректное значение в поле тематики $v.";
                         continue;
                     }
                     $card_persons[]   = Person::checkPersonExist($v);
@@ -729,6 +728,7 @@ class CardsController extends AbstractController
 
         if(!empty($_POST["edit_card"]))
         {
+            $new_card   = Card::prepareNewCard($cardId, $_POST);
             // $them = new ThemList();
             // $them->setName("test");
             // $them->save();
@@ -783,10 +783,10 @@ class CardsController extends AbstractController
             }
 
 
-            // echo "<pre>new_card";
-            // var_dump($new_card);
-            // echo "</pre>123<hr>";
-            // // echo "123<hr>";
+            echo "<pre>new_card";
+            var_dump($new_card);
+            echo "</pre>123<hr>";
+            // echo "123<hr>";
 
             // Проверка наличия/либо создание нового шифра из формы создания карточки, POST массива.
             $new_card_shifr         = Card::checkShifr();
@@ -841,37 +841,19 @@ class CardsController extends AbstractController
                 }
             }
 
-            // if((isset($_POST["new_thems"]))&&(count($_POST["new_thems"])>0))
-            // {
-            //     foreach($_POST["new_thems"] AS $k=>$v)
-            //     {
-            //         if ((!isset($v))||(strlen($v)<3))
-            //         {
-            //             $errors[]   = "Ошибка ввода. Не корректное значение в поле тематики $v.";
-            //             continue;
-            //         }
-            //         $new_card_thems[ThemList::checThemByName($v)]   = ThemList::getById(ThemList::checThemByName($v))->getName();
-            //     }
-            // }
-
-            // тематики не должны быть строкой тк должна быть хотя бы одна тематика в карточке
-            if (gettype($_POST["thems"])!="string")
+            if ((isset($_POST["thems"]))&&(count($_POST["thems"])>0))
             {
-
-                if ((isset($_POST["thems"]))&&(count($_POST["thems"])>0))
+            //   echo "<pre>ОБработка тем при изменении карточек</PRE>";
+                foreach($_POST["thems"] AS $k=>$v)
                 {
-                //   echo "<pre>ОБработка тем при изменении карточек</PRE>";
-                    foreach($_POST["thems"] AS $k=>$v)
+                    // echo "<br>".$k."=>".$v;
+                    if ((!isset($v))||(strlen($v)<3))
                     {
-                        // echo "<br>".$k."=>".$v;
-                        if ((!isset($v))||(strlen($v)<3))
-                        {
-                            // echo "QWERTY";
-                            $errors[]   = "Ошибка ввода. Не корректное значение в поле тематики $v.";
-                            continue;
-                        }
-                        $new_card_thems[$k]   = ThemList::getById(ThemList::checThemByName($v))->getName();
+                        // echo "QWERTY";
+                        $errors[]   = "Ошибка ввода. Не корректное значение в поле тематики $v.";
+                        continue;
                     }
+                    $new_card_thems[$k]   = ThemList::getById(ThemList::checThemByName($v))->getName();
                 }
             }
 
@@ -889,93 +871,110 @@ class CardsController extends AbstractController
                 // exit;
             }
 
-            // echo "Обработка персоналий";
-            // $new_persons    = ((isset($_POST["new_persons"]))&&($_POST["persons"]!==""))?$_POST["new_persons"]:[];
-            // // $post_persons   = ((isset($_POST["persons"])))?$_POST["persons"]:[];
-            // $post_persons   = ((isset($_POST["persons"]))&&($_POST["persons"]!=="")&&(gettype($_POST["persons"]!="string")))?$_POST["persons"]:[];
 
-            //если появились в добавленных новые персоналии даже из списка то берем этот массив
-            $new_persons    = (isset($_POST["new_persons"]))?$_POST["new_persons"]:[];
             
-            // воспринимаем уже имеювшиеся персоналии - исключаем не массив
-            $post_persons   = ((isset($_POST["persons"]))&&(gettype($_POST["persons"]!="string")))?$_POST["persons"]:[];
-
-            if (gettype($_POST["persons"])=="string")
-            {
-                $post_persons   = [];
-            }
-
-            // echo "<hr>@@@@@@@@@@@@";
-            // echo ($_POST["persons"]);
-            // var_dump($_POST);
-            // var_dump($post_persons);
-
+            echo "Обработка персоналий";
+            $card           = Card::getCardView($cardId);
+            // $card_persons   = Card::getCardPersons($card);
+    
+            $new_persons    = isset($_POST["new_persons"])?$_POST["new_persons"]:[];
+            var_dump($new_persons);
+            
+            $post_persons    = isset($_POST["persons"])?$_POST["persons"]:[];
+            var_dump($post_persons);
+    
             $new_card_persons   = $post_persons;
-
-            // var_dump($new_card_persons);
-
-            // Запись всех персоналий в карточке при её изменении - те которые изменились
-            if ((isset($new_persons))&&(count($new_persons)>0))
-            {
-                foreach($new_persons AS $k=>$v)
-                {
-                    $person = Person::getByName($v);
-                    // var_dump($person);
-                    $new_card_persons[$person->getId()] = $v;
-                    // $card_persona = $card_person->setCardRecord($card->getId(), $v);
-                    
-                    // if ($card_persona===null)
-                    // {
-                    //     $errors[]   = "Ошибка ввода. Не удалось сохранить персоналию ".$v;
-                    //     break;
-                    // }
-
-                }
-
-            }
-
-            /*
-            persons: "", [0:N]
-            new_persons: [0:N];
-            */
-
-            // var_dump($new_card_persons);
-            $new_card["persons"]     = $new_card_persons;
-            // var_dump($new_card);
-
-
-            if (count($errors)==0)
-            {
-                // $new_card["persons"] = "";
-                $new_card = Card::editCard($new_card, $cardId);
-                if ($new_card===null)
-                {
-                    $errors[]	= "Ошибка ввода.";
-                }
-                else{
-                    $msgs[]		= "Изменения успешно сохранены!";
-                }
-            }
             
+            
+                    // Запись всех персоналий в карточке при её изменении - те которые изменились
+                    // if ((isset($post_persons))&&(count($post_persons)>0))
+                    // {
+                    //     foreach($post_persons AS $k=>$v)
+                    //     {
+                    //         $card_person = new CardPerson();
+                    //         $card_persona = $card_person->setCardRecord($card->getId(), $v);
+                            
+                    //         if ($card_persona===null)
+                    //         {
+                    //             $errors[]   = "Ошибка ввода. Не удалось сохранить персоналию ".$v;
+                    //             break;
+                    //         }
+            
+                    //     }
+            
+                    // }
+            
+                    // Запись всех персоналий в карточке при её изменении - те которые изменились
+                    if ((isset($new_persons))&&(count($new_persons)>0))
+                    {
+                        foreach($new_persons AS $k=>$v)
+                        {
+                            $person     = Person::getByName($v);
+                            $new_card_persons[$person->getId()]     = $v;
+                            // $card_person = new CardPerson();
+                            // $card_persona = $card_person->setCardRecord($card->getId(), $v);
+                            
+                            // if ($card_persona===null)
+                            // {
+                            //     $errors[]   = "Ошибка ввода. Не удалось сохранить персоналию ".$v;
+                            //     break;
+                            // }
+            
+                        }
+            
+                    }
+            
+                    echo "<hr>";
+                    $old_card_persons   = Card::getCardPersons($card);
+                    var_dump($old_card_persons);
+            
+                    echo "<hr>";
+                    var_dump($new_card_persons);
+            
+                    foreach($old_card_persons AS $k=>$old_person)
+                    {
+                        // удалем все старые персоналии в этой карточке из бд, которых не должно быть теперь в карточке - удалали их в форме карточки
+                        // if(!in_array($k, array_keys($new_card_persons)))
+                        // {
+                            $old_p  = CardPerson::findOneByColumnWhere(" WHERE (card='".$card->getId()."') AND (person='".$k."')");
+                            $old_p->delete();
+                        //     continue;
+                        // }
+            
+                        // Удаляем чтобы не было дублей в таблице cards_persons новых и старых персоналий
+                        // unset($new_card_persons[$k]);
+                    }
+            
+                    var_dump($new_card_persons);
+                    $card->setPersons($new_card_persons);
+            
+                    // if (count($errors)==0)
+                    // {
+                    //     // // $new_card["persons"] = "";
+                    //     echo "!!!!!!!!!!!!!!!!!!!!!";
+                    //     var_dump($new_card);
+                    //     // var_dump($cardId);
+                    //     $card = Card::editCard($new_card, $cardId);
+                    //     if ($card===null)
+                    //     {
+                    //         $errors[]	= "Ошибка ввода.";
+                    //     }
+                    //     else{
+                    //         $msgs[]		= "Изменения успешно сохранены!";
+                    //     }
+                    // }
         }
 
+
+
+
+
+        // $card->setPersons(Card::getCardPersons($card));
         
-        $card           = Card::getCardView($cardId);
-        // $card_persons   = Card::getCardPersons($card);
-
-        
-        // var_dump($new_persons);
-
-
-
-
-
-        $card->setPersons(Card::getCardPersons($card));
-        
-        // echo "<hr><pre>";
-        // echo "Карточка документа № ".$cardId;
-        // var_dump($card);
-        // echo "</pre>";
+        echo "<hr><pre>";
+        echo ">>>>>>>>>>>>>>>>>>>Карточка документа № ".$cardId;
+        var_dump($card);
+        echo "</pre>";
 
         // $this->view->renderHtml('cards/view_card.php',["card" => $card, "errors" => $errors, "ThemList" => $ThemList, "msgs" => $msgs]);
         $this->view->renderHtml('cards/view_card3.php',["card" => $card, "errors" => $errors, "ThemList" => $ThemList, "PersonList" => $PersonList, "msgs" => $msgs]);
@@ -989,19 +988,18 @@ class CardsController extends AbstractController
 
     public function deleteCard($cardId){
 
-        $msgs       = ["Карточка помечена на удаление"];
+        $msgs       = [];
         $errors     = [];
         $ThemList   = ThemList::findAll();
         $PersonList = Person::findAllByASC("name");
         
-        // var_dump($this->user);//->getRoleTitle());
-        // echo ($this->user!==null);
+        var_dump($this->user);//->getRoleTitle());
+        echo ($this->user!==null);
         // echo intval(!in_array($this->user->getRoleTitle(),["editor", "admin", "root"]));
         if (($this->user===null)||(!in_array($this->user->getRoleTitle(),["editor", "admin", "root"])))
         {
             echo "Вам не доступна данная операция.";
             $errors[]   = "Ошибка ввода.";
-            $msgs[]     = "";
         }
 
         try {
@@ -1011,30 +1009,13 @@ class CardsController extends AbstractController
             $card->save();
         } catch (\Throwable $th) {
             $errors[]   = "Ошибка при удалении карточки";
-            $msgs[]     = "";
         }
         $card       = Card::getCardView($cardId);
-        // echo "<pre>";
-        // var_dump($card);
-        // echo "</pre>";
+        echo "<pre>";
+        var_dump($card);
+        echo "</pre>";
 
         $this->view->renderHtml('cards/view_card3.php',["card" => $card, "errors" => $errors, "ThemList" => $ThemList, "PersonList" => $PersonList, "msgs" => $msgs]);
-    }
-    
-    public function deletedList()
-    {
-        $deleted_cards  = [];
-        $tmp            = Card::findAllByColumnWhere(' WHERE (deleted=1) ORDER BY id;');
-        
-        foreach($tmp AS $card)
-        {
-            $deleted_cards[$card->getId()] = Card::getCardView($card->getId());
-            
-        }
-        // var_dump($deleted_cards);
-        
-        
-        $this->view->renderHtml('cards/deleted_list.php',["cards" => $deleted_cards]);
     }
 }
 

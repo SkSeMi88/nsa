@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 	<meta charset="UTF-8">
-	<title>НСА НА РК 2021. <?=isset($title_page)?$title_page:"НСА НА РК 2021";?></title>
+	<title>НСА НА РК 2021. <?=isset($title_page)?$title_page:"";?></title>
 	<link rel="stylesheet" href="/styles.css">
 	<link rel="stylesheet" href="/mvcnsa21.css">
 

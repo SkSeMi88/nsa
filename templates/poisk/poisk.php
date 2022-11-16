@@ -1,203 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>КТК</title>
-
-    <link rel="icon" type="image/ico" href="favicon.png" />
-
-    <link rel="stylesheet" href="../../src/css/style.css" />
-
-    <link rel="stylesheet" href="/ktk/css/mvckb.css" />
-    <link rel="stylesheet" href="/ktk/css/create_man.css">
-    <link rel="stylesheet" href="/ktk/css/create_card_man.css">
-    <link rel="stylesheet" href="/ktk/css/create_man_id.css">
-            
-    <script src="/ensa/js/ensa.js"></script>
-
-	<style>
-		.header_page{
-			font-size: 20px;
-			font-style:bold;
-			border-bottom: solid 1px;
-			color: red;
-		}
-
-		#myThems {
-			width   : 50%;
-		}
-
-		
-        /* #thems_list_box {
-            padding     : 0px;
-        } */
-
-        .header_page{
-            font-size: 20px;
-            font-style:bold;
-            border-bottom: solid 1px;
-            color: red;
-        }
-
-        /* #myThems {
-            width   : 50%;
-        } */
-
-        .cardThem {
-            width		: 50%;
-            margin	: 3px;
-        }
-
-        .cardLine {
-            display     : flex;
-            margin      : 3px;
-            justify-content:flex-start;
-        }
-
-        .cardFieldName {
-            
-            display     : flex;
-            width       : 25%;
-            /* text-align  : center; */
-            text-align  : right;
-            align       : right;
-            font-style   : italic;
-            font-weight: bold;
-        }
-        
-
-        .cardFieldName > div {
-            
-            /* display     : flex; */
-            /* width       : 15%; */
-            /* text-align  : center; */
-            text-align  : right;
-            align       : right;
-        }
-        
-        .cardFieldValue{
-            
-            align       : right;
-            display     : flex;
-            width       : 75%;
-        }
-        
-        .cardFieldValue input, select, textarea{
-            
-            /* display     : flex; */
-            width       : 75%;
-        }
-        
-        /* input > 
-        #myThems {
-            
-            width       : 75%;
-
-        } */
-
-        .finder_box{
-            display:    flex;
-            /* justify-content: start; */
-        }
-
-        .finder-box-value {
-            display     : flex;
-            width       : 60%;
-        }     
-
-        .finder {
-            /* display:    flex; */
-            width   : 20%;
-        }
-
-        /* .finder > div {
-
-            width   : inherit;
-            width   : 50%;
-            width   : 50%;
-        }  */
-        
-        .finder-name {
-            width           : auto;
-            margin-right    : 3px;
-        }
-        
-        .finder-value{
-            /* display : inline; */
-            /* width           : inherit;  */
-            /* width           : auto; */
-            width           : 80%;
-        }
-
-        .finder-value > input {
-            width           : inherit; 
-            /* width           : 100%;  */
-            /* width           : auto; */
-            
-
-        }
-
-		body {
-			margin		: 0px;
-			padding		: 0px;
-			/*text-align	: left;*/
-		}
-		
-		.user-line {
-			/*margin		: 0px;*/
-			padding			: 2px;
-			padding-right	: 10px;
-			width			: auto;/*100%;*/
-			height			: 20px;
-			font-size		: 18px;
-			background		: silver;
-			text-align		: right;
-		}
-		
-		.logo-line {
-			margin		: 0px;
-			padding			: 0px;
-			/*padding-right	: 10px;*/
-			width			: 100%;
-			height			: 32px;
-			font-size		: 32px;
-			/*background		: silver;*/
-			text-align		: left;
-		}
-		
-		.body_page {
-			margin			: 250px;
-			padding			: 0px;
-		}
-
-		
-		.menu-line {
-			display			: flex;
-			margin			: 3px;
-			border-top		: solid 1px;
-			border-bottom	: solid 1px;
-		}
-
-		.menu-line > div {
-			display			: flex;
-			margin			: 3px;
-		}
-
-	</style>
-
-
-</head>
-<body>
-<!-- <hr>
-<pre> -->
-<?//= var_dump($user->getFio())?>
-    <!-- </pre>
-<hr> -->
 <?php
-
-    
     echo "<div>";
     if (!empty($errors))
     {
@@ -213,8 +14,6 @@
     echo "<div>";
     if (!empty($msgs))
     {
-        $msgs[] = "В нижерасположенной форме Вы можете создать следующую (новую) карточку на основе созданной.";
-        $msgs[] = "Заполните поля и нажмите сохранить.";
         foreach($msgs AS $msg)
         {
             echo "<div>";
@@ -225,50 +24,18 @@
     echo "</div>";
 ?>
 
-<div>
-	<div class="user-line">
-		<?php
-
-	        if ($user!==null)
-	        {
-
-	            $user_profile_link_1  = "/users/profile/";//.$user->getId();
-	            $user_profile_link_2  = "/users/logout/";//.$user->getId();
-	            $logined = 'Привет, <a href="'.$user_profile_link_1.'">'. $user->getNickname().'</a> | <a href="'.$user_profile_link_2.'">Выйти</a>';
-	            $logined = '<a href="'.$user_profile_link_1.'">'. $user->getFio().'('.$user->getRoleName().')</a> | <a href="'.$user_profile_link_2.'">Выйти</a>';
-	            echo $logined;
-	        }
-	        else{
-	
-	            // не авторизованная загрузка страница
-	            $not_logined     =  '<a href="/users/login">Войти</a>';
-	            $not_logined    .=  ' | <a href="/users/signup/">Зарегистрироваться</a>';
-	            echo $not_logined;
-	        }
-		?>
-	</div>
-	
-	<div class="logo-line">
-		НСА 2021
-		<!--&nbsp;-->
-	</div>
-
-	<div class="menu-line">
-		<!--&nbsp;-->
-		<?//=$user_menu;?>
-		<?php
-		// var_dump($UserMenu);
-		print_r($UserMenu);
-		?>
-	</div>
-</div>
-<div class="body-page">
 
 
-</div>
+<?php
+// var_dump($UserMenu);
+
+$title_page = "НСА. Общий поиск";
+?>
+
+<?php include __DIR__ . '/../header2.php'; ?>
 
 
-    <div class="header_page">
+<div class="header_page">
         <!-- <h2> -->
             Создание карточки "документа"
         <!-- </h2> -->
@@ -757,13 +524,4 @@
 </body>
 </html>
 
-<!-- CREATE TABLE `ensa`.`cards` ( `id` INT NOT NULL AUTO_INCREMENT , `doc_type` INT NOT NULL , `event_date` TEXT NOT NULL , `card_date` TEXT NOT NULL , `event_place` TEXT NOT NULL , `card_place` TEXT NOT NULL , `doc_header` TEXT NOT NULL , `shifr_id` INT NOT NULL , `original` TEXT NOT NULL , `langs` TEXT NOT NULL , `playback` TEXT NOT NULL , `state` TEXT NOT NULL , `compiler` TEXT NOT NULL , `compilation_вфеу` TEXT NOT NULL , `summary` TEXT NOT NULL , `persons` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;  -->
-<!-- ALTER TABLE `doc_types` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`); 
-INSERT INTO `doc_types` (`id`, `name`) VALUES (NULL, 'Документ на бумажной основе'), (NULL, 'НТД'); 
-INSERT INTO `doc_types` (`id`, `name`) VALUES (NULL, 'Фотодокумент'); 
-
-ALTER TABLE `cards` CHANGE `state` `state` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0';
-
-ALTER TABLE `cards` CHANGE `state` `state` TINYINT NULL DEFAULT '0';
-
--->
+<?php include __DIR__ . '/../footer.php'; ?>

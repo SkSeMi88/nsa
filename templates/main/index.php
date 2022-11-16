@@ -13,12 +13,28 @@
 
 		<div>
 			На данный моmент разработано:
-			<p>
-				<a href="/thems/list">Список тематик</a>
-			</p>
+
 			<p>
 				<a href="/fonds">Архивный шифр</a>
 			</p>
+
+			<p>
+				<a href="/thems/list">Список тематик</a>
+			</p>
+
+			<p>
+				<a href="/persons/list">Список персоналий</a>
+			</p>
+
+			<p>
+				<a href="/cards/list">Список карточек</a>
+			</p>
+
+			<p>
+				<a href="/cards/deleted">Список карточек на удаление</a>
+			</p>
+			
+
 			<p>
 				<a href="/cards/create">Создать карточку документа</a>
 			</p>

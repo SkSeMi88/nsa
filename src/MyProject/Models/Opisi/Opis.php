@@ -60,7 +60,7 @@ class Opis extends ActiveRecordEntity
     /**
      * @return string
      */
-    public function getPath(): string
+    public function getPath(): mixed
     {
         return $this->path;
     }
@@ -231,7 +231,7 @@ class Opis extends ActiveRecordEntity
 		$opis->setFondId($fond_id);
 		$opis->setName($opis_name);
 		$opis->setTitle('Название описи фонда');
-		$opis->setDates('');
+		$opis->setDate('');
 		$opis->setPath('');
 
 		$opis->save();

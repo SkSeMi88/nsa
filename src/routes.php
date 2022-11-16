@@ -2,23 +2,37 @@
 
 return [
 
-    '~^test$~'				    => [\MyProject\Controllers\MainController::class, 'test'],
+    '~^test$~'                      => [\MyProject\Controllers\MainController::class, 'test'],
 
     '~^release$~'				    => [\MyProject\Controllers\MainController::class, 'release'],
     '~^$~'						    => [\MyProject\Controllers\MainController::class, 'main'],
-    '~^404$~'						    => [\MyProject\Controllers\MainController::class, 'm404'],
+    '~^404$~'                       => [\MyProject\Controllers\MainController::class, 'm404'],
     '~^fonds$~'					    => [\MyProject\Controllers\FondsController::class, 'list'],
     '~^fond/(\d+)$~'		        => [\MyProject\Controllers\FondsController::class, 'viewCard'],
     
     '~^cards/create$~'		        => [\MyProject\Controllers\CardsController::class, 'createCard'],
     '~^cards/(\d+)$~'		        => [\MyProject\Controllers\CardsController::class, 'viewCard'],
     '~^cards/(\d+)/files$~'         => [\MyProject\Controllers\CardsController::class, 'viewCardFiles'],
+    '~^cards/delete/(\d+)$~'        => [\MyProject\Controllers\CardsController::class, 'deleteCard'],
+    '~^cards/(\d+)/delete$~'        => [\MyProject\Controllers\CardsController::class, 'deleteCard'],
+    '~^cards/deleted$~'             => [\MyProject\Controllers\CardsController::class, 'deletedList'],
     
     // Список тематик
-    '~^thems/list$~'		        => [\MyProject\Controllers\ThemsController::class, 'list'],
+    '~^thems/list$~'                => [\MyProject\Controllers\ThemsController::class, 'list'],
 
     // Карточка тематики
-    '~^thems/card/(\d+)$~'		        => [\MyProject\Controllers\ThemsController::class, 'viewCard'],
+    '~^thems/card/(\d+)$~'          => [\MyProject\Controllers\ThemsController::class, 'viewCard'],
+    
+    // Список персоналий
+    '~^persons/list$~'		        => [\MyProject\Controllers\PersonsController::class, 'list'],
+
+    // Карточка персоналии
+    '~^persons/card/(\d+)$~'        => [\MyProject\Controllers\PersonsController::class, 'viewCard'],
+    
+    // поиск
+    '~^poisk$~'        => [\MyProject\Controllers\MainController::class, 'poisk'],
+
+
 
     // '~^users/register$~'            => [\MyProject\Controllers\UsersController::class, 'signUp'],
     // '~^users/(\d+)/activate/(.+)$~' => [\MyProject\Controllers\UsersController::class, 'activate'],

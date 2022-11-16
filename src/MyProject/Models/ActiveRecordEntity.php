@@ -114,6 +114,7 @@ abstract class ActiveRecordEntity implements \JsonSerializable
 
     public function save(): void
     {
+        // var_dump($this);
         $mappedProperties = $this->mapPropertiesToDbFormat();
         if ($this->id !== null) {
             $this->update($mappedProperties);
@@ -324,7 +325,11 @@ abstract class ActiveRecordEntity implements \JsonSerializable
     {
         // INSERT INTO `thems_list` (`id`, `name`, `parent`) VALUES (NULL, 'Первая', ''), (NULL, 'Вторая', '')
         // $SQL   = 'SELECT * FROM thems_list ORDER BY :field ASC;';
-        $SQL   = 'SELECT * FROM thems_list ORDER BY '.$field.' ASC;';
+        
+        // $SQL   = 'SELECT * FROM thems_list ORDER BY '.$field.' ASC;';
+        
+        $SQL   = 'SELECT * FROM '. static::getTableName().' ORDER BY '.$field.' ASC;';
+        
         $db = Db::getInstance();
     
         // return $db->query('SELECT * FROM `' . static::getTableName() . '`;', [':field' => $field], static::class);

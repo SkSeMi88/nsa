@@ -70,7 +70,7 @@ class Delo extends ActiveRecordEntity
 	/**
 	 * @return string
 	 */
-	public function getPath(): string
+	public function getPath(): mixed
 	{
 		return $this->path;
 	}
