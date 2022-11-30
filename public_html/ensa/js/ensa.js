@@ -299,3 +299,31 @@ function testField(field)
     field_box.appendChild(newDivItemField);
 
 }
+
+function resetPoiskFiltr(){
+
+    // https://stackoverflow.com/questions/4431162/get-all-the-elements-of-a-particular-form
+    var form = document.getElementById('filtr');
+    var data = new FormData(form);
+
+    let thems = [];
+    let persons = [];
+    for (var [key, value] of data) {
+        // console.log(data.key);
+        if ((key=="new_thems[]")||(key=="thems"))
+        {
+            thems.push(value);
+        }
+
+        else if ((key=="new_persons[]")||(key=="persons"))
+        {
+            persons.push(value);
+        }
+        else
+        {
+            console.log(key, value);
+        }
+    }
+    console.log(thems);
+    console.log(persons);
+}
