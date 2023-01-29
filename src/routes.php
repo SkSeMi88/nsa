@@ -17,6 +17,8 @@ return [
     '~^cards/(\d+)/delete$~'        => [\MyProject\Controllers\CardsController::class, 'deleteCard'],
     '~^cards/deleted$~'             => [\MyProject\Controllers\CardsController::class, 'deletedList'],
     
+    '~^cards/list$~'             => [\MyProject\Controllers\CardsController::class, 'listCards'],
+    
     // Список тематик
     '~^thems/list$~'                => [\MyProject\Controllers\ThemsController::class, 'list'],
 
@@ -31,6 +33,7 @@ return [
     
     // поиск
     '~^poisk$~'        => [\MyProject\Controllers\MainController::class, 'poisk'],
+    '~^poisk-test$~'        => [\MyProject\Controllers\MainController::class, 'poisktest'],
 
 
 

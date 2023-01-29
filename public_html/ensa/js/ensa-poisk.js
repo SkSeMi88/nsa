@@ -2,12 +2,9 @@ var ThemsList = [];
 
 var PersonsList = [];
 
-function ResetShifrFormFiltr()
-{
-    document.querySelector("#fond").value="";
-    document.querySelector("#opis").value="";
-    document.querySelector("#delo").value="";
-    document.querySelector("#list").value="";
+
+function selectFond(fond) {
+    alert(fond);
 }
 
 function addField(field) {
@@ -184,7 +181,7 @@ function addPersonField(field) {
     // укажем строго что это текстовое поле
     // newDivItemFieldValue.id = "new_thems" + field; // + "[]";
     newDivItemFieldValue.type = "text";
-    newDivItemFieldValue.name = "persons[]";
+    newDivItemFieldValue.name = "new_persons[]";
     // newDivItemFieldValue.disabled = true;
 
     // Запишем в него значение
@@ -324,18 +321,15 @@ function resetPoiskFiltr(){
         "state",
         "compiler",
         "compilation_date",
-        "summary",
-        // "thems",
-        // "persons"
+        "summary"
     ];
 
     let field_name  = "";
     for(var i=0; i<form_fields.length; i++)
     {
 
-        
         field_name  = form_fields[i];
-        console.log(i, field_name);
+        console.log(i);
         
         console.log(document.forms.filtr.elements[field_name+"_filtr"].options[0].selected=true);
         console.log(field_name);
@@ -359,9 +353,6 @@ function resetPoiskFiltr(){
     console.log(document.querySelector("#opis").value="");
     console.log(document.querySelector("#delo").value="");
     console.log(document.querySelector("#list").value="");
-
-    console.log(document.forms.filtr.elements["thems_filtr"].options[0].selected=true);
-    console.log(document.forms.filtr.elements["persons_filtr"].options[0].selected=true);
     // // var form = document.getElementById('filtr');
     // // var data = new FormData(form);
 
@@ -370,7 +361,7 @@ function resetPoiskFiltr(){
     // let thems = [];
     // let persons = [];
     // for (var [key, value] of data) {
-        //     console.log(data.key);
+    //     console.log(data.key);
     //     if ((key=="new_thems[]")||(key=="thems"))
     //     {
     //         thems.push(value);
@@ -394,21 +385,4 @@ function resetPoiskFiltr(){
 
     document.querySelector("#thems_list_box").innerHTML = "";
     document.querySelector("#persons_list_box").innerHTML = "";
-}
-
-function ResetShifrFormFiltr(){
-
-    console.log("Reset Shifr Form Filtr fields:");
-    // console.log(document.forms.filtr.elements["shifr_filtr"].options[0].selected = true);
-    // console.log(document.forms.filtr.elements["fond"].value="");
-    // console.log(document.querySelector("#opis").value="");
-    // console.log(document.querySelector("#delo").value="");
-    // console.log(document.querySelector("#list").value="");
-    document.forms.filtr.elements["shifr_filtr"].options[0].selected = true;
-    document.forms.filtr.elements["fond"].value="";
-    document.querySelector("#opis").value="";
-    document.querySelector("#delo").value="";
-    document.querySelector("#list").value="";
-    console.log("STOP!");
-
 }

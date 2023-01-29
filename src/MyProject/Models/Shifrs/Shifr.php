@@ -416,4 +416,253 @@ class Shifr extends ActiveRecordEntity
     	// }
     }
 
+
+	static public function getShifrPoisk0($fields)
+	{
+		echo "@@@@@@@@@@@";
+		$shifrs	= [];
+
+		$WHR	= [];
+
+		if ((isset($fields["fond"]))&&(strlen($fields["fond"])>0))
+		{
+
+			$fond		= Fond::findOneByColumn("name", $fields["fond"]);
+			var_dump($fond);
+			if ($fond!=null) {
+				$fond_id	= $fond->getId();
+				$WHR[]		= "(fond_id=".$fond_id.")";
+			}
+		}
+		
+		if ((isset($fields["opis"]))&&(strlen($fields["opis"])>0))
+		{
+			$WHR_opis		= '(name="'.$fields["opis"].'")';
+			if (count($WHR)>0)
+			{
+				$WHR_opis	.= 'AND ('.$WHR[0].')';
+			}
+
+			// $opis		= Opis::findOneByColumn("name", $fields["opis"]);
+			$opis		= Opis::findOneByColumnWhere("id", $WHR_opis);
+			// findOneByColumn("name", $fields["opis"]);
+			
+			var_dump($opis);
+			if ($opis!=null) {
+				echo $fields["opis"];
+				$opis_id	= $opis->getId();
+				$WHR[]		= "(opis_id=".$opis_id.")";
+			}
+		}
+
+		if ((isset($fields["delo"]))&&(strlen($fields["delo"])>0))
+		{
+			$delo		= Delo::findOneByColumn("name", $fields["delo"]);
+
+			if ($delo!=null) {
+				$delo_id	= $delo->getId();
+				$WHR[]		= "(delo_id=".$delo_id.")";
+			}
+		}
+
+		// Если введен лист в поле то и его присоединяем к общему запросу в таблице шифров
+
+		if ((isset($fields["list"]))&&(strlen($fields["list"])>0))
+		{
+			$WHR[]		= "((list=".$fields["list"].") AND (list like '".$fields["list"]."'))";
+		}
+
+		$WHERE = "WHERE ".implode(' AND ', $WHR);
+		var_dump($WHERE);
+		
+
+		// Получаем список шифров по введенным полям из фильтра поиска карточек: фонд, опись, дело
+		$tmp	= Shifr::findOneByColumnWhere("id", $WHERE);
+
+		var_dump($tmp);
+
+
+		return($tmp);
+		return($shifrs);
+	}
+
+	static public function getShifrPoisk($fields)
+	{
+		echo "@@@@@@@@@@@>";
+		$shifrs	= [];
+		
+		$WHR	= [];
+		
+		if ((isset($fields["fond"]))&&(strlen($fields["fond"])>0))
+		{
+			var_dump($fields["fond"]);
+
+
+			$SQL1	= 'Select id FROM fonds WHERE (name="'.$fields["fond"].'")';
+			$tmpi	= Fond::findALLByWhere("id", 'WHERE (name="'.$fields["fond"].'")');
+
+			
+			var_dump($tmpi);
+			if (($tmpi!=null)&&(count($tmpi)>0)) {
+
+				$fonds	= [];
+				foreach($tmpi AS $fond)
+				{
+					$fonds[] = $fond->getId();
+
+				}
+
+				// $fond_id	= $fond->getId();
+				// $WHR[]		= "(fond_id=".$fond_id.")";
+				$WHR[]		= "(fond_id IN (".implode(", ",$fonds)."))";
+			}
+
+			echo "<hr>FONDS - >". implode(",",$WHR);
+		}
+		
+		
+		if ((isset($fields["opis"]))&&(strlen($fields["opis"])>0))
+		{
+			$WHR_opis		= 'WHERE (name="'.$fields["opis"].'")';
+			if (count($WHR)>0)
+			{
+				$WHR_opis	.= 'AND ('.$WHR[0].')';
+			}
+
+			// $opis		= Opis::findOneByColumn("name", $fields["opis"]);
+			$tmpi		= Opis::findAllByWhere("id", $WHR_opis);
+			// $opis		= Opis::findOneByColumnWhere("id", $WHR_opis);
+			// findOneByColumn("name", $fields["opis"]);
+			
+			// var_dump($tmpi);
+			if (($tmpi!=null)&&(count($tmpi)>0)) {
+				
+				$opisi	= [];
+				foreach($tmpi AS $opis)
+				{
+					$opisi[] = $opis->getId();
+
+				}
+
+				// $fond_id	= $fond->getId();
+				// $WHR[]		= "(fond_id=".$fond_id.")";
+				$WHR[]		= "(opis_id IN (".implode(", ",$opisi)."))";
+
+			}
+			echo "<hr>OPISI - >". implode(",",$WHR);
+		}
+
+		if ((isset($fields["delo"]))&&(strlen($fields["delo"])>0))
+		{
+			
+			$WHR_delo	= ' WHERE '. implode("AND", $WHR).' AND (name="'.$fields["delo"].'")';
+			$WHR_delo	= ' WHERE (name="'.$fields["delo"].'")';
+
+			// $WHR_delo	.= (count($WHR)>0)?'" AND ".implode("AND", $WHR).':"";
+			if (count($WHR)>0)
+			{
+				$WHR_delo	.= " AND (".implode("AND", $WHR).")";
+			}
+
+			// echo ">>>>>>>".$WHR_delo;
+
+
+			$tmpi		= Delo::findAllByWhere("id", $WHR_delo);
+
+			if (($tmpi!=null)&&(count($tmpi)>0)) {
+				$dela		= [];
+				foreach($tmpi AS $delo)
+				{
+					$dela[] = $delo->getId();
+				}
+
+				$WHR[]		= "(delo_id IN (".implode(", ",$dela)."))";
+			}
+		}
+
+		echo "<hr>DELA - >". implode(",",$WHR);
+		// Если введен лист в поле то и его присоединяем к общему запросу в таблице шифров
+
+		if ((isset($fields["list"]))&&(strlen($fields["list"])>0))
+		{
+			$WHR[]		= "((list=".$fields["list"].") AND (list like '".$fields["list"]."'))";
+		}
+
+		$WHERE	= "";
+		if (count($WHR)>0){
+
+			$WHERE = " WHERE ".implode(' AND ', $WHR);
+		}
+		var_dump($WHERE);
+		
+
+		// Получаем список шифров по введенным полям из фильтра поиска карточек: фонд, опись, дело
+		// $tmp	= Shifr::findOneByColumnWhere("id", $WHERE);
+		$tmpi	= Shifr::findAllByWhere("id", $WHERE);
+
+		$shifrs	= [];
+		if (($tmpi!=null)&&(count($tmpi)>0))
+		{
+			foreach($tmpi AS $shifr)
+			{
+				$shifrs[]	= $shifr->getId();
+
+			}
+		}
+
+		var_dump($shifrs);
+		return($shifrs);
+	}
+
+
+	static public function getFondsList()
+	{
+		$fonds	= [];
+		// $SQL	= 'SELECT id, name FROM fonds ORDER BY name ASC;';
+		$tmp	= Fond::findAllByWhere("id, name", " ORDER BY name ASC;");
+			// $SQL);
+		// $fonds	= Fond::findAllByASC("name");
+		foreach($tmp AS $i=>$fond)
+		{
+			$fonds[$i]	= [$fond->getId(),$fond->getName()];
+		}
+		return($fonds);
+	}
+
+	static public function getFondsDatalist()
+	{
+
+		$FondsDataList	= '<input list="fonds_list"><datalist id="fonds_list">';
+		$fonds			= self::getFondsList();
+		echo count($fonds);
+		
+		for ($i=0; $i < count($fonds); $i++) { 
+			# code...
+			// $FondsDataList	.= "\n";
+			$FondsDataList	.= '<option value="'.$fonds[$i][1].'"><li>'.$fonds[$i][1].'</li></option>';
+		}
+		$FondsDataList	.= "</datalist>";
+
+		echo($FondsDataList);
+		return($FondsDataList);
+	}
+
+	static public function getOpisiDatalistByFond($fondName)
+	{
+
+		$FondsDataList	= '<input list="fonds_list"><datalist id="fonds_list">';
+		$fondId			= Fond::findOneByColumn("name", $fondName)->getId();
+		$opisi			= Opis::findAllByColumnWhere();
+		echo count($opisi);
+		
+		for ($i=0; $i < count($opisi); $i++) { 
+			# code...
+			// $FondsDataList	.= "\n";
+			$FondsDataList	.= '<option value="'.$opisi[$i][1].'"><li>'.$opisi[$i][1].'</li></option>';
+		}
+		$FondsDataList	.= "</datalist>";
+
+		echo($FondsDataList);
+		return($FondsDataList);
+	}
 }

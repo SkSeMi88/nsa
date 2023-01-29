@@ -1036,6 +1036,30 @@ class CardsController extends AbstractController
         
         $this->view->renderHtml('cards/deleted_list.php',["cards" => $deleted_cards]);
     }
+    
+    public function listCards()
+    {
+        // $cards  = Card::findAll();
+        // $this->view->renderHtml('cards/list_cards.php',["cards" => $cards]);
+        
+        $list_cards = [];
+        $tmp        = Card::findAllByColumnWhere(' WHERE ((deleted IS NULL) OR (deleted ="0")) ORDER BY id;');
+        // $tmp  = Card::findAll();
+        // var_dump($tmp);
+        
+        if (($tmp!==null))
+        {
+            foreach($tmp AS $card)
+            {
+                $list_cards[$card->getId()] = Card::getCardView($card->getId());
+                
+            }
+        }
+        
+        // var_dump($list_cards);
+        
+        $this->view->renderHtml('cards/list_cards.php',["cards" => $list_cards]);
+    }
 }
 
 
@@ -1048,3 +1072,4 @@ class CardsController extends AbstractController
     Вывод этого количества на кнопке со сылкой на просмотр изображений.
 
 */
+

@@ -185,7 +185,9 @@
 
     </style>
 
-<!-- <script src="/ensa/js/ensa.js"></script> -->
+<script src="/ensa/js/ensa.js"></script>
+<script src="/ensa/js/ensa-poisk.js"></script>
+
 </head>
 <body>
 
@@ -277,6 +279,7 @@
     </select>
         <!-- <textarea name="doc_type"><?//=$card->getDocType(); ?></textarea> -->
         <input type="text" id="doc_type" name="doc_type" value="<?=((isset($_REQUEST["doc_type"])))?$_REQUEST["doc_type"]:"";?>" width="250px;">
+
     </div>
 </div>
 <!-- <hr> -->
@@ -434,51 +437,57 @@
             <select id="shifr_filtr" name="shifr_filtr" style="width: 10%; height:20px;">
                 <option value="0" <?=((isset($_REQUEST["shifr_filtr"]))&&($_REQUEST["shifr_filtr"]=="0"))?"selected":"";?>>Не задано</option>
                 <option value="1" <?=((isset($_REQUEST["shifr_filtr"]))&&($_REQUEST["shifr_filtr"]=="1"))?"selected":"";?>>Равно</option>
-                <!-- <option value="2" <?//=((isset($_REQUEST["shifr_filtr"]))&&($_REQUEST["shifr_filtr"]=="2"))?"selected":"";?>>Не равно</option>
-                <option value="3" <?//=((isset($_REQUEST["shifr_filtr"]))&&($_REQUEST["shifr_filtr"]=="3"))?"selected":"";?>>Контекст</option> -->
+                <!-- <option value="2" <?=((isset($_REQUEST["shifr_filtr"]))&&($_REQUEST["shifr_filtr"]=="2"))?"selected":"";?>>Не равно</option>
+                <option value="3" <?=((isset($_REQUEST["shifr_filtr"]))&&($_REQUEST["shifr_filtr"]=="3"))?"selected":"";?>>Контекст</option> -->
             </select>
-
-            <!-- <input type="button" name="reset_shifr" id="reset_shifr" value="X" onclick="ResetShifrFormFiltr();"> -->
-            <input type="button" value="@" onclick="ResetShifrFormFiltr();">
-
-            <!-- <select id="fond_filtr" name="fond_filtr" style="width: 10%; height:20px;">
+            <select id="fond_filtr" name="fond_filtr" style="width: 10%; height:20px;">
                 <option value="0" <?=((isset($_REQUEST["fond_filtr"]))&&($_REQUEST["fond_filtr"]=="0"))?"selected":"";?>>Не задано</option>
                 <option value="1" <?=((isset($_REQUEST["fond_filtr"]))&&($_REQUEST["fond_filtr"]=="1"))?"selected":"";?>>Равно</option>
                 <option value="2" <?=((isset($_REQUEST["fond_filtr"]))&&($_REQUEST["fond_filtr"]=="2"))?"selected":"";?>>Не равно</option>
                 <option value="3" <?=((isset($_REQUEST["fond_filtr"]))&&($_REQUEST["fond_filtr"]=="3"))?"selected":"";?>>Контекст</option>
-            </select> -->
+            </select>
             <div class="finder">
                 <div class="finder-name">
                     Фонд
                 </div>
                 <div class="finder-value">
-                    <Input type="text" id="fond"  name="fond" placeholder="Фонд" value="<?=(isset($_REQUEST["fond"]))?$_REQUEST["fond"]:"";?>" >
+                    <!-- <Input list="fond" id="fond"  name="fond" placeholder="Фонд" value="<?//=(isset($_REQUEST["fond"]))?$_REQUEST["fond"]:"";?>" > -->
+
+                    <input list="fonds-list" id="fonds" name="fonds" style="width:inherit;" onchanged="selectFond(this.value);">
+		            <datalist id="fonds-list">
+                        <option value="Не задано">Не задано</option>
+                        <option value="Равно">Равно</option>
+                        <option value="2" <?=((isset($_REQUEST["fond_filtr"]))&&($_REQUEST["fond_filtr"]=="2"))?"selected":"";?>>Не равно</option>
+                        <option value="3" <?=((isset($_REQUEST["fond_filtr"]))&&($_REQUEST["fond_filtr"]=="3"))?"selected":"";?>>Контекст</option>
+                    </datalist>
                 </div>
             </div>
 
             
-            <!-- <select id="opis_filtr" name="opis_filtr" style="width: 10%; height:20px;">
+            <select id="opis_filtr" name="opis_filtr" style="width: 10%; height:20px;">
                 <option value="0" <?=((isset($_REQUEST["opis_filtr"]))&&($_REQUEST["opis_filtr"]=="0"))?"selected":"";?>>Не задано</option>
                 <option value="1" <?=((isset($_REQUEST["opis_filtr"]))&&($_REQUEST["opis_filtr"]=="1"))?"selected":"";?>>Равно</option>
                 <option value="2" <?=((isset($_REQUEST["opis_filtr"]))&&($_REQUEST["opis_filtr"]=="2"))?"selected":"";?>>Не равно</option>
                 <option value="3" <?=((isset($_REQUEST["opis_filtr"]))&&($_REQUEST["opis_filtr"]=="3"))?"selected":"";?>>Контекст</option>
-            </select> -->
+            </select>
             <div class="finder">
                 <div class="finder-name">
                     Опись
                 </div>
                 <div class="finder-value">
-                    <Input type="text" id="opis"  name="opis" placeholder="Опись" value="<?=(isset($_REQUEST["opis"]))?$_REQUEST["opis"]:"";?>" >
+                    <Input type="list" id="opis"  name="opis" placeholder="Опись" value="<?=(isset($_REQUEST["opis"]))?$_REQUEST["opis"]:"";?>" >
+                    <datalist name="">
+                    </datalist>
                 </div>
             </div>
 
             
-            <!-- <select id="delo_filtr" name="delo_filtr" style="width: 10%; height:20px;">
+            <select id="delo_filtr" name="delo_filtr" style="width: 10%; height:20px;">
                 <option value="0" <?=((isset($_REQUEST["delo_filtr"]))&&($_REQUEST["delo_filtr"]=="0"))?"selected":"";?>>Не задано</option>
                 <option value="1" <?=((isset($_REQUEST["delo_filtr"]))&&($_REQUEST["delo_filtr"]=="1"))?"selected":"";?>>Равно</option>
                 <option value="2" <?=((isset($_REQUEST["delo_filtr"]))&&($_REQUEST["delo_filtr"]=="2"))?"selected":"";?>>Не равно</option>
                 <option value="3" <?=((isset($_REQUEST["delo_filtr"]))&&($_REQUEST["delo_filtr"]=="3"))?"selected":"";?>>Контекст</option>
-            </select> -->
+            </select>
             <div class="finder">
                 <div class="finder-name">
                     Дело
@@ -488,12 +497,12 @@
                 </div>
             </div>
 
-            <!-- <select id="list_filtr" name="list_filtr" style="width: 10%; height:20px;">
+            <select id="list_filtr" name="list_filtr" style="width: 10%; height:20px;">
                 <option value="0" <?=((isset($_REQUEST["list_filtr"]))&&($_REQUEST["list_filtr"]=="0"))?"selected":"";?>>Не задано</option>
                 <option value="1" <?=((isset($_REQUEST["list_filtr"]))&&($_REQUEST["list_filtr"]=="1"))?"selected":"";?>>Равно</option>
                 <option value="2" <?=((isset($_REQUEST["list_filtr"]))&&($_REQUEST["list_filtr"]=="2"))?"selected":"";?>>Не равно</option>
                 <option value="3" <?=((isset($_REQUEST["list_filtr"]))&&($_REQUEST["list_filtr"]=="3"))?"selected":"";?>>Контекст</option>
-            </select> -->
+            </select>
             
             <div class="finder">
                 <div class="finder-name">
@@ -538,7 +547,7 @@
     </select>
 
         <!-- <textarea name="original" ><?//=$card->getOriginal();?></textarea> -->
-        <input type="text" id="original" name="original" value="<?=((isset($_REQUEST["original"]))&&((isset($_REQUEST["original_filtr"]))&&($_REQUEST["original_filtr"]!="0")))?$_REQUEST["original"]:"";?>">
+        <input type="text" id="original" name="original" value="<?=((isset($_REQUEST["original"]))&&((isset($_REQUEST["original_filtr"]))&&($_REQUEST["original_filtr"]=="4")))?$_REQUEST["original"]:"";?>">
         <?//= $_REQUEST["original"];?>
     </div>
 </div>
@@ -726,20 +735,11 @@
         <div style="width:70%;">
 
         <select id="thems_filtr" name="thems_filtr" style="width: 10%; height:20px;">
-            <!-- <option>Равно</option>
+            <option>Равно</option>
             <option>Не равно</option>
             <option>Контекст</option>
-            <option>Содержит в списке</option> -->
-
-            <option value="0" <?=((isset($_REQUEST["thems_filtr"]))&&($_REQUEST["thems_filtr"]=="0"))?"selected":"";?>>Не задано</option>
-            <option value="1" <?=((isset($_REQUEST["thems_filtr"]))&&($_REQUEST["thems_filtr"]=="1"))?"selected":"";?>>Равно</option>
-            <option value="2" <?=((isset($_REQUEST["thems_filtr"]))&&($_REQUEST["thems_filtr"]=="2"))?"selected":"";?>>Не равно</option>
-            <option value="3" <?=((isset($_REQUEST["thems_filtr"]))&&($_REQUEST["thems_filtr"]=="3"))?"selected":"";?>>Контекст</option>
-            <option value="4" <?=((isset($_REQUEST["thems_filtr"]))&&($_REQUEST["thems_filtr"]=="4"))?"selected":"";?>>Содержит в списке</option>
-
-
+            <option>Содержит в списке</option>
         </select>
-
 
 		<input list="myThem" id="myThems" name="new_them" style="width:inherit;">
 		<datalist id="myThem" >
@@ -812,21 +812,15 @@
 
     <div style="width:70%;">
 
-        <select id="persons_filtr" name="persons_filtr" style="width: 10%; height:20px;">
-            <!-- <option>Не задано</option>
+        <select  name="persons_filtr"  style="width: 10%; height:20px;">
+            <option>Не задано</option>
             <option>Равно</option>
             <option>Не равно</option>
             <option>Контекст</option>
-            <option>Содержит в списке</option> -->
-
-            <option value="0" <?=((isset($_REQUEST["persons_filtr"]))&&($_REQUEST["persons_filtr"]=="0"))?"selected":"";?>>Не задано</option>
-            <option value="1" <?=((isset($_REQUEST["persons_filtr"]))&&($_REQUEST["persons_filtr"]=="1"))?"selected":"";?>>Равно</option>
-            <option value="2" <?=((isset($_REQUEST["persons_filtr"]))&&($_REQUEST["persons_filtr"]=="2"))?"selected":"";?>>Не равно</option>
-            <option value="3" <?=((isset($_REQUEST["persons_filtr"]))&&($_REQUEST["persons_filtr"]=="3"))?"selected":"";?>>Контекст</option>
-            <option value="4" <?=((isset($_REQUEST["persons_filtr"]))&&($_REQUEST["persons_filtr"]=="4"))?"selected":"";?>>Содержит в списке</option>
+            <option>Содержит в списке</option>
         </select>
 
-        <input list="myPerson" id="myPersons" name="person" style="width:inherit;">
+        <input list="myPerson" id="myPersons" name="new_person" style="width:inherit;">
         <datalist id="myPerson" >
         <!-- style="width:100%;"> -->
 
@@ -945,8 +939,8 @@
     {
     ?>
         <input type="submit" value="Найти" name="edit_card">
-        <!-- <input type="button" value="Сбросить фильтр(ы)" onclick="resetPoiskFiltr();"> -->
         <input type="button" value="Сбросить фильтр(ы)" onclick="resetPoiskFiltr();">
+        <input type="button" value="Reset" onclick="resetPoiskFiltr();">
 <?php 
     }
 ?>

@@ -373,6 +373,23 @@ abstract class ActiveRecordEntity implements \JsonSerializable
         }
         return $result;
     }
+    
+    public static function queryTable($SQL): array
+    {
+        $db = Db::getInstance();
+        // $SQL    = 'SELECT '.$from.' FROM '. static::getTableName().' '. $where;
+        // // echo $SQL;
+        // // return $SQL;
+        $result = $db->query(
+            $SQL,
+            [],
+            static::class
+        );
+        if ($result === []) {
+            return null;
+        }
+        return $result;
+    }
 
     public static function transliter($value) :string
     {
